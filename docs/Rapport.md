@@ -12,7 +12,7 @@ Enzo GUIGNOLLE
 ### [III/ Mise en oeuvre sur machine à mémoire partagée](#IV)
 - #### [A/ Assignment102.java](#a)
 - #### [B/ Pi.java](#b)
-### [IV/ Mise en oeuvre en mémoire distribué ](#V)
+### [IV/ Mise en oeuvre en mémoire distribué](#V)
 ### [V/ Evaluation et test de performance](#VI)
 
 <br>
@@ -49,6 +49,10 @@ Après avoir réalisé cela, deux code nous a été fournie, Assignment102.java 
 
 ## <a name="a"></a> A/ Assignment102.java
 
+Voici le diagramme de classe de ce premier code à analyser
+
+<img src="images/Assignment102.jpg" width="300">
+
 Dans ce code nous avons remarquer qu'il utilisait différentes classes de l'API Concurrent donc la classe AtomicInteger, ExecutorService et Executors. Nous avons aussi remarqué que nAtomSuccess est le nCible que nous avions choisis durant la conception de nos codes et que nThrows est le nTotal que nous avions choisis.<br>
 Ensuite nous avons analyser le code et ce que chaque classe servait. Nous avons vu que le code utilisait la méthode incremantAndGet() de la classe AtomicInteger ce qui permet d'incrémenter de 1 au nombre.<br>
 Nous avons aussi souligner que la classe MonteCarlo compose la classe PiMonteCarlo car c'est une classe qui est créer elle-même dans un autre classe.<br>
@@ -64,6 +68,10 @@ alors qu'avec cette nouvelle façon seulement 25% doivent passer pas la section 
 
 ## <a name="a"></a> B/ Pi.java
 
+Voici le diagramme de classe de la deuxième classe à analyser Pi.java.
+
+<img src="images/Pi.jpg" width="500">
+
 Dans Pi.java nous avons vu qu'il utilisait plusieurs classes comme Future, ExecutionExeption ou encore Executor mais aussi une interface Callable qu'on 
 nous a introduit précedemment qui font tous partie de l'API Concurrent.
 
@@ -74,5 +82,12 @@ Nous avons ensuite regarder la classe Worker, qui implément l'interface Worker 
 Nous avons fini par conclure cette analyse par dire que le paradigme de programmation parralèle de ce code est Master/Worker.
 
 # <a name="V"></a> IV/ Mise en oeuvre en mémoire distribué
+
+Pour réalisé la méthode de Monte Carlo en mémoire distribué, un code nous a été fourni voici son diagramme de classe : 
+
+<img src="images/dsitributed_MC.jpg" width="400">
+
+Ce code est composé de deux classes MasterSocket et WorkerSocket. De plus ce code utilise la méthode des Sockets pour réalisé ce programme en mémoire distribué. C'est-à-dire qu'un socket est un petit fichier contenant les données qu'un autre programme peut avoir besoin pour exécuter. Après avoir analyser le code nous devions faire la boucle de MonteCarlo dans la classe WorkerSocket.<br>
+Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un argument à la classe WorkerSocket pour qu'il puissent définir le port à écouter pour l'envoie de message. Ensuite en executant la classe MasterSocket nous devons dire le nombre de Worker que nous voulons utiliser mais aussi les différents port qui doit utiliser.
 
 # <a name="VI"></a> V/ Evaluation et test de performance

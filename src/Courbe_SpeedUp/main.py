@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 def plot_scalability_forte(ax, csv_file, group_size=5, title=""):
     """

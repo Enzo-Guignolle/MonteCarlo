@@ -20,9 +20,12 @@ public class Pi
     public static void main(String[] args) throws Exception
 	{
 		for (int i = 0; i < Integer.parseInt(args[0]); i++) {
+			int numWorker = 16;
+			//int totalCount = 10000000 / numWorker;
+			int totalCount = 10000000;
 			long total = 0;
 			// 10 workers, 50000 iterations each
-			total = new Master().doRun(1000000, 1);
+			total = new Master().doRun(totalCount, numWorker);
 			System.out.println("total from pi.Master = " + total);
 		}
     }
@@ -61,9 +64,6 @@ class Master {
 
 	long stopTime = System.currentTimeMillis();
 	double error =  (Math.abs((pi - Math.PI)) / Math.PI);
-	double difference = (pi - Math.PI);
-	int numProcessor = Runtime.getRuntime().availableProcessors();
-
 	WriteToFile writer = new WriteToFile();
 	writer.write(pi, (stopTime - startTime), totalCount*numWorkers,numWorkers, total, error);
 

@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Random;
 
-import distributedMC_step1_javaSocket.pi.Master;
+/*import distributedMC_step1_javaSocket.pi.Master;*/
 
 /**
  * Worker is a server. It computes PI by Monte Carlo method and sends 
@@ -22,9 +22,9 @@ public class WorkerSocket {
 
 	if (!("".equals(args[0]))) port=Integer.parseInt(args[0]);
 	System.out.println(port);
-        ServerSocket s = new ServerSocket(port);
+        ServerSocket server = new ServerSocket(port);
         System.out.println("Server started on port " + port);
-        Socket soc = s.accept();
+        Socket soc = server.accept();
 	
         // BufferedReader bRead for reading message from Master
         BufferedReader bRead = new BufferedReader(new InputStreamReader(soc.getInputStream()));
@@ -53,6 +53,7 @@ public class WorkerSocket {
 		isRunning=false;
 	    }	    
         }
+        server.close();
         bRead.close();
         pWrite.close();
         soc.close();

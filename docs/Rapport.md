@@ -111,7 +111,17 @@ Avant de préparer et réalisé les différents tests de performance, je vais do
 - Mémoire RAM : 8 Go
 
 De plus je vais rapidement expliquer ce qu'est la scalabilité forte et faible. La scalabilité forte permet de regarder si on laisse le nombre de points max à calculer dans ce cas mais qu'on augmente le nombre de processeur utilisé ce qui fait que le nombre de point par processeur diminue au fur et à mesure. La scalabilité faible est le faite de laisser fixe le nombre de point par processeur mais d'augmenter le nombre de point max à calculer mais aussi le nombre de processeur utilisé.
+Pour pouvoir réalisé les courbes de la scalabilité forte mais aussi faible nous allons devoir calculé le speed up de chaque test. Pour cela nous devons utilisé cette formule :
 
+```
+SpeedUp = Temps_1_coeur / Temps_n_coeurs
+```
+
+Ensuite pour savoir si les speed up calculer après test de chaque programme soit optimal, nous allons nous fier à ce schéma : 
+
+<img src="images/graphique_base_speedUp.JPG" width="300">
+
+Pour avoir un speedUp optimal il faut que la courbe soit linéaire, c'est à dire que le speed up soit proportionnel en fonction du nombre de processeur comme le speed up de 1 processeur sera toujours 1, il faut que le speed up à N processeurs soit équivalent à 1*N.
 
 ### Assignment102.java
 

@@ -81,7 +81,7 @@ Nous avons fini par conclure cette analyse par dire que le paradigme de programm
 
 <img src="images/schema_master_worker.png" height="300">
 
-Donc le paradigme Master/Worker fonctionne de la manière suivante. Un programme fait office de Master c'est-à-dire que 
+Donc le paradigme Master/Worker fonctionne de la manière suivante. Un programme fait office de Master c'est-à-dire que qu'il envoie des données que le Worker doit traiter pour réalisé ce qu'il lui a été attribué. Un fois que le Worker à réalisé ce qu'il lui a été attribué il renvoie ces résultat au Master qui analyse les données et les utilise pour finir ce qu'il doit faire.
 <br><br>
 
 ## <a name="V"></a> IV/ Mise en oeuvre en mémoire distribué

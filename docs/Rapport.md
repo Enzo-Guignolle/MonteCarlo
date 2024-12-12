@@ -52,10 +52,6 @@ Après avoir réalisé cela, deux codes nous a été fournie, Assignment102.java
 
 ### <a name="a"></a> A/ Assignment102.java
 
-Voici le diagramme de classe de ce premier code à analyser
-
-<img src="images/Assignment102.jpg" width="300">
-
 Dans ce code nous avons remarquer qu'il utilisait différentes classes de l'API Concurrent dont la classe AtomicInteger, ExecutorService et Executors. Nous avons aussi remarqué que nAtomSuccess représentait le nCible que nous avions choisis durant la conception de nos codes et que nThrows est le nTotal que nous avions choisis.<br>
 Ensuite nous avons analyser le code et ce que chaque classe servait. Nous avons vu que le code utilisait la méthode incremantAndGet() de la classe AtomicInteger ce qui permet d'incrémenter de 1 au nombre.<br>
 Nous avons aussi souligner que la classe MonteCarlo compose la classe PiMonteCarlo car c'est une classe qui est créer elle-même dans un autre classe.<br>
@@ -65,16 +61,16 @@ Ensuite il prépare une workStealingPool avec le nombre de processeur récupére
 Nous avons terminer l'analyse de ce code par dire qu'il représentait le paradigme des itérations parallèles car nous avons une boucle qui lance tout les itérations de MonteCarlo qui sont des Runnable.
 De plus nous avons appris que l'executor permet de réaliser ce que l'on faisait quand on associait un Runnable avec un Thread durant les premiers TP.<br>
 On peut ensuite améliorer le code pour éviter que trop de processus doivent passer par la section critique et nous avons penser à regarder les points qui tombe hors du quart de cercle et de calculer la différence. Cela optimisera les calculs en parallèles car nous avions vu que seulement 75% des points tombait dans le cercle donc que 75% des processus allait devoir passer par la section critique alors qu'avec cette nouvelle façon seulement 25% doivent passer pas la section critique. Il suffira juste de modifier le calcul de Pi pour trouver la bonne valeur.
+Voici le diagramme de classe du code de Assignment102.java après avoir réalisé l'analyse du code : 
+
+<img src="images/Assignment102.jpg" width="300">
 
 ### <a name="a"></a> B/ Pi.java
 
-Voici le diagramme de classe de la deuxième classe à analyser Pi.java.
 
-<img src="images/Pi.jpg" width="400">
-
+Nous allons maintenant analyser le code Pi.java avant de réalisé le diagramme de classe
 Dans Pi.java nous avons vu qu'il utilisait plusieurs classes comme Future, ExecutionExeption ou encore Executor mais aussi une interface Callable qu'on 
-nous a introduit précedemment qui font tous partie de l'API Concurrent.<br>
-La classe Future permet de gérer des calculs asynchrone, elle permet de faire des tâches en arrière plan. On l'utilise souvent pour récupérer les résultats des Callable en utilisant la méthode get de la classe Future et on peut aussi voir si la tâches est terminée ou pas.<br>
+nous a introduit précedemment qui font tous partie de l'API Concurrent. La classe Future permet de gérer des calculs asynchrone, elle permet de faire des tâches en arrière plan. On l'utilise souvent pour récupérer les résultats des Callable en utilisant la méthode get de la classe Future et on peut aussi voir si la tâches est terminée ou pas.<br>
 Nous avons ensuite vu qu'il y avait deux classe principale qui sont la classe Master et Worker. Nous avons commencer par analyser la classe Master. Dans la classe Master nous avons vu qu'il y a une instanciation d'une liste de Callable, qui est la pour instancier les différents Worker qui vont être instancié. Ensuite dans le code nous avons pu voir une boucle qui parcours la liste de résultat des workers qui est une liste de Future défini précedemment. Ensuite on a essayer de savoir ce qu'était totalCount et nous avons dit que c'est le total de point qu'un Worker doit faire et que la variable total est le résultat de points qui sont dans la cible. Et nous avons fini par remarquer qu'au moment du calcul de Monte Carlo il fallait diviser par le nombre de Worker.
 Nous avons ensuite regarder la classe Worker, qui implément l'interface Worker avec la classe Long qui est une classe générique. Nous avons ensuite vu que la classe exécutait la boucle de Monte Carlo avant de renvoyer le résultat au Master.
 Nous avons fini par conclure cette analyse par dire que le paradigme de programmation parralèle de ce code est Master/Worker. Pour comprendre le fonctionnement du paradigme Master/Worker en mémoire partagé voici un schéma qui résume : 
@@ -82,6 +78,9 @@ Nous avons fini par conclure cette analyse par dire que le paradigme de programm
 <img src="images/schema_master_worker.png" height="300">
 
 Donc le paradigme Master/Worker fonctionne de la manière suivante. Un programme fait office de Master c'est-à-dire que qu'il envoie des données que le Worker doit traiter pour réalisé ce qu'il lui a été attribué. Un fois que le Worker à réalisé ce qu'il lui a été attribué il renvoie ces résultat au Master qui analyse les données et les utilise pour finir ce qu'il doit faire.
+Maintenant voici le diagramme de classe de Pi.java suite à son analyse.
+
+<img src="images/Pi.jpg" width="400">
 <br><br>
 
 ## <a name="V"></a> IV/ Mise en oeuvre en mémoire distribué
@@ -90,8 +89,8 @@ Pour réaliser Monte Carlo en mémoire distribué, il a été utilisé le paradi
 
 <img src="images/schema_distributed.png" height="300">
 
-Donc ce code permettra de faire en sorte que un Master soit sur une machine avec un certain nombre de Worker mais que d'autre Worker soit sur d'autre machine et qu'il puissent communiqué par envoie de message avec la machine qui contient le Master.<br>
-Un code permettant de réalisé cela, nous a été fourni. Voici son diagramme de classe :
+Donc ce code permettra de faire en sorte que un Master soit sur une machine avec un certain nombre de Worker mais que d'autre Worker soit sur d'autre machine et qu'il puissent communiqué par envoie de message avec la machine qui contient le Master. De plus le paradigme fonctionne comme pour Pi.java donc je n'ai aps besoin d'expliquer de nouveau cela.<br>
+Ensuite un code permettant de réalisé la méthode de Monte Carlo en mémoire distribué, nous a été fourni. Voici le diagramme de classe du code en question:
 
 <img src="images/distributed_MC.jpg" width="400">
 
@@ -101,8 +100,7 @@ Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un
 
 ## <a name="VI"></a> V/ Evaluation et test de performance
 
-Dans cette partie de mon rapport, on va faire les analyse de performance des différents codes que j'ai mentionné plus tôt. Nous allons commencer par préparer les tests de performance de Assignment102.java puis de Pi.java et on finira par le code en mémoire distribué.
-
+Dans cette partie de mon rapport, on va faire les analyse de performance des différents codes que j'ai mentionné plus tôt. Nous allons commencer par préparer les tests de performance de Assignment102.java puis de Pi.java et on finira par le code en mémoire distribué.<br>
 Avant de préparer et réalisé les différents tests de performance, je vais donné les différentes spécifications de l'ordianteur qui les aura réalisé. Cependant il est évident que les tests seront différents sur d'autre architecture matérielle.
 
 - Processeur : Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz   1.50 GHz

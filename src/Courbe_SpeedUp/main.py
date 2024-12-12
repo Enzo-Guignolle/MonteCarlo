@@ -22,6 +22,8 @@ def plot_scalability_forte(ax, csv_file, group_size=5, title=""):
         avg = int(sum(group) / len(group))
         meanDuration.append(avg)
 
+    print(title, meanDuration)
+
     # Liste des processeurs
     nbProcessor = sorted(list(set(df["nbProcessor"].tolist())))
 
@@ -60,6 +62,8 @@ def plot_scalability_faible(ax, csv_file, group_size=5, title=""):
         group = durees[i:i + group_size]
         avg = int(sum(group) / len(group))
         meanDuration.append(avg)
+
+    print(title, meanDuration)
 
     # Liste des processeurs
     nbProcessor = sorted(list(set(df["nbProcessor"].tolist())))

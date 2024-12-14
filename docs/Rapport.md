@@ -45,6 +45,78 @@ On pouvait ensuite encore décomposer la tâche T0 en sous-tâche :
 Ensuite nous devions trouver les dépendances de tâches pour savoir quels tâches pouvait être fait en parallèle. Donc nous avion vu que T1 dépendait de T0 mais que les sous-tâches de T0 était indépendantes. Cependant dans les sous-tâches nous avons T0p2 qui dépend de T0p1. <br>
 Après nous devions déterminer la ressource critique et la section critique, qui sont pour la ressource critique ncible et la section critique l'incrémentation de ncible.
 Après nous devions réfléchir à des pseudo-code pour faire ces codes avec les paradigmes qui sont **Master/Worker** et **itérations parallèles**.
+Avant de vous mettre les différents pseudo-code je vais expliquer rapidement le paradigme Master/Worker.
+
+### Explication du paradigme Master/Worker
+
+Pour comprendre le fonctionnement du paradigme Master/Worker voici un schéma qui résume : 
+
+<img src="images/schema_master_worker.png" height="300">
+
+Donc le paradigme Master/Worker fonctionne de la manière suivante. Un programme fait office de Master c'est-à-dire que qu'il envoie des données que le Worker doit traiter pour réalisé ce qu'il lui a été attribué. Un fois que le Worker à réalisé ce qu'il lui a été attribué il renvoie ces résultat au Master qui analyse les données et les utilise pour finir ce qu'il doit faire.
+
+Maintenant je vais expliquer les algorithme en pseudo-code que nous avons du réaliser ci-dessous : 
+
+### a) Pseudo-code itération parallèle
+
+Comme pseudo-code pour le paradigme des itérations parrallèles nous avons fait cela :
+
+```
+initialiser n_cible à 0
+
+pour p allant de 0 à n_tot-1
+
+    xp = valeur alléatoire en 0 et 1
+    yp = valeur alléatoire en 0 et 1
+
+    si (xp au carré + yp au carré) inferieur à 1
+        ajouter 1 à n_cible
+    fin si
+
+fin pour
+
+calculer pi = 4 * n_cible / n_tot
+```
+
+Dans ce pseudo-code qui aurait pu être réalisé en parrallèle nous aurions eu comme section critique toute la condition if et comme ressource critique nous aurion bien sur ajout de 1 à n_cible.
+
+### b) Pseudo-code Master/Worker
+
+Comme pseudo-code pour le paradigme Master/Worker nous avons du réaliser le pseudo-code pour le Master mais aussi pour le Worker voilà ce que cela donne : 
+
+- En premier nous allons voir le pseudo-code pour le Worker
+```
+Worker_MC : parametre(n_tot)
+    initialiser n_cible à 0
+
+    pour p allant de 0 à n_tot-1
+
+        xp = valeur alléatoire en 0 et 1
+        yp = valeur alléatoire en 0 et 1
+
+        si (xp au carré + yp au carré) inferieur à 1
+            ajouter 1 à n_cible
+        fin si
+
+    fin pour
+
+revoyer n_cible
+```
+
+- Maintenant nous allons voir le pseudo-code pour le Master
+```
+Master_MC
+    n_tot[nb_worker]
+    initialiser n_CibleSomme à 0
+
+    pour i allant de 0 à nb_worker-1
+        n_tot[i] = n_total/nb_worker
+        n_cible[i] = Worker_MC[i](n_tot[i]).start
+    fin pour
+
+    n_CibleSomme = somme de toutes les éléments n_cible
+    pi = 4 * n_CibleSomme/n_total
+```
 
 ## <a name="IV"></a> III/ Mise en oeuvre sur machine à mémoire partagée
 
@@ -67,17 +139,17 @@ Voici le diagramme de classe du code de Assignment102.java après avoir réalis�
 
 ### <a name="a"></a> B/ Pi.java
 
+* #### a) Explication de la classe Future 
+
+La classe Future permet de gérer des calculs asynchrone, elle permet de faire des tâches en arrière plan. On l'utilise souvent pour récupérer les résultats des Callable en utilisant la méthode get de la classe Future et on peut aussi voir si la tâches est terminée ou pas
+
+* #### b) Analyse du code Pi.java
 
 Nous allons maintenant analyser le code Pi.java avant de réalisé le diagramme de classe
-Dans Pi.java nous avons vu qu'il utilisait plusieurs classes comme Future, ExecutionExeption ou encore Executor mais aussi une interface Callable qu'on 
-nous a introduit précedemment qui font tous partie de l'API Concurrent. La classe Future permet de gérer des calculs asynchrone, elle permet de faire des tâches en arrière plan. On l'utilise souvent pour récupérer les résultats des Callable en utilisant la méthode get de la classe Future et on peut aussi voir si la tâches est terminée ou pas.<br>
+Dans Pi.java nous avons vu qu'il utilisait plusieurs classes comme Future, ExecutionExeption ou encore Executor mais aussi une interface Callable qu'on nous a introduit précedemment qui font tous partie de l'API Concurrent. 
 Nous avons ensuite vu qu'il y avait deux classe principale qui sont la classe Master et Worker. Nous avons commencer par analyser la classe Master. Dans la classe Master nous avons vu qu'il y a une instanciation d'une liste de Callable, qui est la pour instancier les différents Worker qui vont être instancié. Ensuite dans le code nous avons pu voir une boucle qui parcours la liste de résultat des workers qui est une liste de Future défini précedemment. Ensuite on a essayer de savoir ce qu'était totalCount et nous avons dit que c'est le total de point qu'un Worker doit faire et que la variable total est le résultat de points qui sont dans la cible. Et nous avons fini par remarquer qu'au moment du calcul de Monte Carlo il fallait diviser par le nombre de Worker.
 Nous avons ensuite regarder la classe Worker, qui implément l'interface Worker avec la classe Long qui est une classe générique. Nous avons ensuite vu que la classe exécutait la boucle de Monte Carlo avant de renvoyer le résultat au Master.
-Nous avons fini par conclure cette analyse par dire que le paradigme de programmation parralèle de ce code est Master/Worker. Pour comprendre le fonctionnement du paradigme Master/Worker en mémoire partagé voici un schéma qui résume : 
-
-<img src="images/schema_master_worker.png" height="300">
-
-Donc le paradigme Master/Worker fonctionne de la manière suivante. Un programme fait office de Master c'est-à-dire que qu'il envoie des données que le Worker doit traiter pour réalisé ce qu'il lui a été attribué. Un fois que le Worker à réalisé ce qu'il lui a été attribué il renvoie ces résultat au Master qui analyse les données et les utilise pour finir ce qu'il doit faire.
+Nous avons fini par conclure cette analyse par dire que le paradigme de programmation parrallèle de ce code est Master/Worker expliquer dans la partie II.
 Maintenant voici le diagramme de classe de Pi.java suite à son analyse.
 
 <img src="images/Pi.jpg" width="400">
@@ -94,8 +166,8 @@ Ensuite un code permettant de réalisé la méthode de Monte Carlo en mémoire d
 
 <img src="images/distributed_MC.jpg" width="400">
 
-Ce code est composé de deux classes : MasterSocket et WorkerSocket. De plus, il utilise la méthode des sockets pour réaliser ce programme en mémoire distribuée. C'est-à-dire qu’un socket est un petit fichier contenant les données dont un autre programme peut avoir besoin pour s’exécuter. Après avoir analysé le code, nous devions intégrer la boucle de Monte Carlo dans la classe WorkerSocket.<br>
-Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un argument à la classe WorkerSocket afin qu’elle puisse définir le port à écouter pour l’envoi de messages. Ensuite, en exécutant la classe MasterSocket, nous devons spécifier le nombre de Worker que nous voulons utiliser ainsi que les différents ports à utiliser pour envoyer les messages.<br>
+Ce code est composé de deux classes : MasterSocket et WorkerSocket. De plus, il utilise la méthode des sockets pour réaliser ce programme en mémoire distribuée. C'est-à-dire qu’un socket est un petit fichier contenant les données dont un autre programme peut avoir besoin pour s’exécuter. Après avoir analysé le code, nous devions intégrer la boucle de Monte Carlo dans la classe WorkerSocket. 
+Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un argument à la classe WorkerSocket afin qu’elle puisse définir le port à écouter pour l’envoi de messages. Ensuite, en exécutant la classe MasterSocket, nous devons spécifier le nombre de Worker que nous voulons utiliser ainsi que les différents ports à utiliser pour envoyer les messages.<br><br>
 À la suite de cela, nous pouvons également faire de la programmation parallèle multi-niveau, c’est-à-dire que chaque WorkerSocket peut créer des Worker sur sa propre machine, comme dans Pi.java, et calculer les points de ces Worker qui les envoient ensuite au MasterSocket, comme prévu.
 
 ## <a name="VI"></a> V/ Evaluation et test de performance
@@ -108,8 +180,8 @@ Avant de préparer et réalisé les différents tests de performance, je vais do
 - Nombre de coeur logique : 8
 - Mémoire RAM : 8 Go
 
-De plus je vais rapidement expliquer ce qu'est la scalabilité forte et faible. La scalabilité forte permet de regarder si on laisse le nombre de points max à calculer dans ce cas mais qu'on augmente le nombre de processeur utilisé ce qui fait que le nombre de point par processeur diminue au fur et à mesure. La scalabilité faible est le faite de laisser fixe le nombre de point par processeur mais d'augmenter le nombre de point max à calculer mais aussi le nombre de processeur utilisé.
-Pour pouvoir réalisé les courbes de la scalabilité forte mais aussi faible nous allons devoir calculé le speed up de chaque test. Pour cela nous devons utilisé cette formule :
+De plus je vais rapidement expliquer ce qu'est la scalabilité forte et faible. La scalabilité forte permet de voir si le speed up augmente en laissant le nombre de points max à calculer dans ce cas mais qu'on augmente le nombre de processeur utilisé ce qui fait que le nombre de point par processeur diminue au fur et à mesure. La scalabilité faible est le faite de voir si le speed Up reste autour de 1 en laissant fixe le nombre de point par processeur mais d'augmenter le nombre de point max à calculer mais aussi le nombre de processeur utilisé.
+Pour pouvoir réalisé les courbes de la scalabilité forte mais aussi faible nous allons devoir calculé le speed up de chaque test. Pour calculer le speed up nous devons utilisé cette formule :
 
 ```
 SpeedUp = Temps_1_coeur / Temps_n_coeurs

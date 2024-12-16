@@ -285,24 +285,42 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 ### Calcul distribué
 
+A la suite des tests des codes en mémoire partagé nous devions analyser le code qui permet de réalisé Monte Carlo en mémoire distribué.
+Pour pouvoir l'analyser nous devions réalisé la courbe de speed up pour la scalabilité faible et la scalabilité forte donc les données récupérer durant l'experience sont ci-dessus.
+
 #### Scalabilité Forte
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               |                   |
-| 1000000                | 500000                         | 2                               |                   |
-| 1000000                | 250000                         | 4                               |                   |
-| 1000000                | 125000                         | 8                               |                   |
-| 1000000                | 62500                          | 16                              |                   |
+| Nombre de machine | Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
+|-------------------|------------------------|--------------------------------|---------------------------------|-------------------|
+| 1                 | 192000000              | 192000000                      | 1                               | 5873              |
+| 1                 | 192000000              | 48000000                       | 4                               | 1506              |
+| 2                 | 192000000              | 24000000                       | 8                               | 756               |
+| 3                 | 192000000              | 16000000                       | 12                              | 508               |
+| 4                 | 192000000              | 12000000                       | 16                              | 385               |
+| 6                 | 192000000              | 8000000                        | 24                              | 267               |
+| 8                 | 192000000              | 6000000                        | 32                              | 206               |
+| 12                | 192000000              | 4000000                        | 48                              | 133               |
+
+D'après ce tableau nous obtenu un courbe de speed up pour la scalabilité forte du code en mémoire distribué qui ressemble à cela : 
+
+<img src="images/courbe_scalabilitéForte_distribue.png" width="400">
+
 
 #### Scalabilité Faible
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               |                   |
-| 2000000                | 1000000                        | 2                               |                   |
-| 4000000                | 1000000                        | 4                               |                   |
-| 8000000                | 1000000                        | 8                               |                   |
-| 16000000               | 1000000                        | 16                              |                   |
+| Nombre de machine | Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
+|-------------------|------------------------|--------------------------------|---------------------------------|-------------------|
+| 1                 | 4000000                | 4000000                        | 1                               | 129               |
+| 1                 | 16000000               | 4000000                        | 4                               | 140               |
+| 2                 | 32000000               | 4000000                        | 8                               | 143               |
+| 3                 | 48000000               | 4000000                        | 12                              | 136               |
+| 4                 | 64000000               | 4000000                        | 16                              | 134               |
+| 6                 | 96000000               | 4000000                        | 24                              | 139               |
+| 8                 | 128000000              | 4000000                        | 32                              | 140               |
+| 12                | 192000000              | 4000000                        | 48                              | 141               |
+
+D'après ce tableau nous obtenu un courbe de speed up pour la scalabilité faible du code en mémoire distribué qui ressemble à cela : 
+
+<img src="images/courbe_scalabilitéFaible_distribue.png" width="400">
 
 ### Evaluation de l'écart du Speed Up

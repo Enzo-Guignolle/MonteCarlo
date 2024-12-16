@@ -6,24 +6,24 @@ Enzo GUIGNOLLE
 
 # Compte-Rendu des TPs
 
-### [Introduction](#I)
-### [I/ Méthode de Monte Carlo](#II)
-### [II/ Algorithme et parrallélisation](#III)
-### [III/ Mise en oeuvre sur machine à mémoire partagée](#IV)
+### [Introduction](#p1)
+### [I/ Méthode de Monte Carlo](#p2)
+### [II/ Algorithme et parrallélisation](#p3)
+### [III/ Mise en oeuvre sur machine à mémoire partagée](#p4)
 - #### [A/ Assignment102.java](#a)
 - #### [B/ Pi.java](#b)
-### [IV/ Mise en oeuvre en mémoire distribué](#V)
-### [V/ Evaluation et test de performance](#VI)
+### [IV/ Mise en oeuvre en mémoire distribué](#Vp5)
+### [V/ Evaluation et test de performance](#p6)
 
 <br>
 
 ------------
 
-# <a name="I"></a> Introduction 
+# <a name="Ip1"></a> Introduction 
 
 Ce document permet de synthétisé ce que j'ai pu réalisé durant les séances de Programmation avancée. Vous retrouverez les différents tests de performance des codes présenté durant ce rapport mais aussi les explications et la manière de réfléxion qu'il y a eu durant ces différentes séance de TP
 
-## <a name="II"></a> I/ Méthode de Monte Carlo
+## <a name="p2"></a> I/ Méthode de Monte Carlo
 
 Durant la première séance de TP sur la méthode de Monte Carlo nous avons eu un cours sur ce qu'était la méthode et comment elle fonctionne pour d'approximer Pi. Je vais maintenant expliqué brièvement la méthode. La méthode de Monte Carlo est une méthode qui permet d'approximer Pi grâce au probabilité. Donc on prend un quart de cercle qui a pour rayon ```r=1``` dont l'aire est ```A = (pi*r**2)/4 = pi/4```. Après on prend un carré avec un coté de la taille du rayon du cercle ```c=1``` avec l'aire qui est ```Ac =c**2=1```. Ensuite on tire aléatoirement plusieurs points ```Xp=(xp,yp)``` et chaque coordonnée des points est tirée par une loi Uniforme ```U(]0,1[)```. Ensuite la probabilité que les points soit tirée dans le quart de cercle est ```P=A/Ac=pi/4```. <br>
 Voici un schéma représentant cette méthode : 
@@ -32,7 +32,7 @@ Voici un schéma représentant cette méthode :
 
 Ensuite pour appoximer Pi on doit réaliser *ntot* tirage aléatoire de point. Ensuite on compte le nombre de point tombé dans le quart de cercle qu'on peut noter *ncible*. Maintenant on peut approcimer P par ```P = ncible/ntot = pi/4```. Grâce à cette formule pour approximer Pi on doit multiplier par 4 donc ça donne ```pi = (4*ncible)/ntot```. Donc maintenant nous pouvons approximer Pi.
 
-## <a name="III"></a> II/ Algorithme et parrallélisation
+## <a name="p3"></a> II/ Algorithme et parrallélisation
 
 Après avoir réaliser cela nous devions réfléchir à des algorithme en pseudo-code pour réaliser la méthode de Monte Carlo tout en faisant de la programmation parallèle. Donc on avait réfléchi au modèle de parallélisme que cela pouvait être et nous avions décidé que c'étais un parallélisme de tâche. Ensuite nous devions identifier les différentes tâches que nous avions dans la méthode. Nous avions trouver ces tâches:
 - T0 : tirer et compter ntot points
@@ -118,7 +118,7 @@ Master_MC
     pi = 4 * n_CibleSomme/n_total
 ```
 
-## <a name="IV"></a> III/ Mise en oeuvre sur machine à mémoire partagée
+## <a name="p4"></a> III/ Mise en oeuvre sur machine à mémoire partagée
 
 Après avoir réalisé cela, deux codes nous a été fournie, Assignment102.java et Pi.java et nous devions les analysé chacun pour savoir comment ils implémentait Monte Carlo.
 
@@ -137,7 +137,7 @@ Voici le diagramme de classe du code de Assignment102.java après avoir réalis�
 
 <img src="images/Assignment102.jpg" width="300">
 
-### <a name="a"></a> B/ Pi.java
+### <a name="b"></a> B/ Pi.java
 
 * #### a) Explication de la classe Future 
 
@@ -155,7 +155,7 @@ Maintenant voici le diagramme de classe de Pi.java suite à son analyse.
 <img src="images/Pi.jpg" width="400">
 <br><br>
 
-## <a name="V"></a> IV/ Mise en oeuvre en mémoire distribué
+## <a name="p5"></a> IV/ Mise en oeuvre en mémoire distribué
 
 Pour réaliser Monte Carlo en mémoire distribué, il a été utilisé le paradigme Master/Worker pour comprendre comment cela fonctionne voici un schema qui synthétise son fonctionnement : 
 
@@ -170,21 +170,49 @@ Ce code est composé de deux classes : MasterSocket et WorkerSocket. De plus, il
 Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un argument à la classe WorkerSocket afin qu’elle puisse définir le port à écouter pour l’envoi de messages. Ensuite, en exécutant la classe MasterSocket, nous devons spécifier le nombre de Worker que nous voulons utiliser ainsi que les différents ports à utiliser pour envoyer les messages.<br><br>
 À la suite de cela, nous pouvons également faire de la programmation parallèle multi-niveau, c’est-à-dire que chaque WorkerSocket peut créer des Worker sur sa propre machine, comme dans Pi.java, et calculer les points de ces Worker qui les envoient ensuite au MasterSocket, comme prévu.
 
-## <a name="VI"></a> V/ Evaluation et test de performance
+## <a name="p6"></a> V/ Evaluation et test de performance
 
-Dans cette partie de mon rapport, on va faire les analyse de performance des différents codes que j'ai mentionné plus tôt. Nous allons commencer par préparer les tests de performance de Assignment102.java puis de Pi.java et on finira par le code en mémoire distribué.<br>
+### Contexte
+
+Dans cette partie de mon rapport nous allons voir la qualité de chaque code au sens de la norme ISO/IEC 25010. Dans cette norme, nous allons nous concentrer sur la section "Quality in use" et dans cette section, nous allons nous concentrer sur la partie sur l'efficiency que nous pouvons retrouver dans la norme ISO/IEC 25022. Dans cette norme, il nous parle de plusieurs temps à analyser. 
+
+#### Time 
+
+Pour calculer la variable Time pour l'efficiency nous devons faire ce calcul : 
+
+```
+Time  = T_target / T_actual
+```
+
+#### Task Time
+
+Ensuite nous avons la variable task time dont la formule pour le calculer est : 
+
+```
+Task Time = (T_target - T_actual) / T_target
+```
+
+A la suite de cela nous avons deux possibilité pour analyser les codes : 
+
+- La première possibilité que nous avons, c'est de comparer le code parallèle au code séquenciel. Dans ce cas la nous avons T_target = Temps_1_processeur et nous avons T_actual = T_n_processeurs ce qui nous permet de calculer le speed up et de évaluer la courbe.
+
+- La deuxième possibilité c'est de considérer qu'on a un parallélisme idéal, c'est de qu'on cible. Dans ce cas nous T_target = T_n_processeurs et nous avons T_actual = T_n_processeurs_chapeau où T_n_processeurs_chapeau le temps en scalabilité forte T_n_processeur = (1/p)*T_1_processeur. Grâce à cela nous allons évaluer l'écart avec la courbe de speed Up.
+
+
+### Réalisation des tests
+
 Avant de préparer et réalisé les différents tests de performance, je vais donné les différentes spécifications de l'ordianteur qui les aura réalisé. Cependant il est évident que les tests seront différents sur d'autre architecture matérielle.
 
-- Processeur : Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz   1.50 GHz
-- Nombre de coeur physique : 4
+- Processeur : Intel® Core™ i7-9700 CPU @ 3.00GHz
+- Nombre de coeur physique : 8
 - Nombre de coeur logique : 8
-- Mémoire RAM : 8 Go
+- Mémoire RAM : 32 Go
 
 De plus je vais rapidement expliquer ce qu'est la scalabilité forte et faible. La scalabilité forte permet de voir si le speed up augmente en laissant le nombre de points max à calculer dans ce cas mais qu'on augmente le nombre de processeur utilisé ce qui fait que le nombre de point par processeur diminue au fur et à mesure. La scalabilité faible est le faite de voir si le speed Up reste autour de 1 en laissant fixe le nombre de point par processeur mais d'augmenter le nombre de point max à calculer mais aussi le nombre de processeur utilisé.
 Pour pouvoir réalisé les courbes de la scalabilité forte mais aussi faible nous allons devoir calculé le speed up de chaque test. Pour calculer le speed up nous devons utilisé cette formule :
 
 ```
-SpeedUp = Temps_1_coeur / Temps_n_coeurs
+SpeedUp = Temps_1_processeur / Temps_n_processeurs
 ```
 
 Ensuite pour savoir si les speed up calculer après test de chaque programme soit optimal, nous allons nous fier à ce schéma : 
@@ -193,17 +221,19 @@ Ensuite pour savoir si les speed up calculer après test de chaque programme soi
 
 Pour avoir un speedUp optimal il faut que la courbe soit linéaire, c'est à dire que le speed up soit proportionnel en fonction du nombre de processeur comme le speed up de 1 processeur sera toujours 1, il faut que le speed up à N processeurs soit équivalent à 1*N.
 
+### Evaluation du Speed Up
+
 ### Assignment102.java
 
 #### Scalabilité Forte
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 195 ms            |
-| 1000000                | 500000                         | 2                               | 264 ms            |
-| 1000000                | 250000                         | 4                               | 494 ms            |
-| 1000000                | 125000                         | 8                               | 549 ms            |
-| 1000000                | 62500                          | 16                              | 566 ms            |
+| Nombre total de points  | Nombre de point par processeur  | Nombre de processeur utilisable | Temps d'exécution  |
+|-------------------------|---------------------------------|---------------------------------|--------------------|
+| 10000000                | 10000000                        | 1                               | 667 ms             |
+| 10000000                | 5000000                         | 2                               | 790 ms             |
+| 10000000                | 2500000                         | 4                               | 849 ms             |
+| 10000000                | 1250000                         | 8                               | 1121 ms            |
+| 10000000                | 625000                          | 16                              | 2241 ms            |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -211,13 +241,13 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 #### Scalabilité Faible
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 248 ms            |
-| 2000000                | 1000000                        | 2                               | 551 ms            |
-| 4000000                | 1000000                        | 4                               | 2116 ms           |
-| 8000000                | 1000000                        | 8                               | 4979 ms           |
-| 16000000               | 1000000                        | 16                              | 12659 ms          |
+| Nombre total de points  | Nombre de point par processeur  | Nombre de processeur utilisable | Temps d'exécution |
+|-------------------------|---------------------------------|---------------------------------|-------------------|
+| 10000000                | 10000000                        | 1                               | 668 ms            |
+| 20000000                | 10000000                        | 2                               | 1520 ms           |
+| 40000000                | 10000000                        | 4                               | 3202 ms           |
+| 80000000                | 10000000                        | 8                               | 6239 ms           |
+| 160000000               | 10000000                        | 16                              | 13880 ms          |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -229,11 +259,11 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 | Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
 |------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 588 ms            |
-| 1000000                | 500000                         | 2                               | 329 ms            |
-| 1000000                | 250000                         | 4                               | 215 ms            |
-| 1000000                | 125000                         | 8                               | 121 ms            |
-| 1000000                | 62500                          | 16                              | 134 ms            |
+| 1000000                | 1000000                        | 1                               | 326 ms            |
+| 1000000                | 500000                         | 2                               | 172 ms            |
+| 1000000                | 250000                         | 4                               | 95 ms             |
+| 1000000                | 125000                         | 8                               | 59 ms             |
+| 1000000                | 62500                          | 16                              | 68 ms             |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -243,11 +273,11 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 | Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
 |------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 600 ms            |
-| 2000000                | 1000000                        | 2                               | 597 ms            |
-| 4000000                | 1000000                        | 4                               | 749 ms            |
-| 8000000                | 1000000                        | 8                               | 1107 ms           |
-| 16000000               | 1000000                        | 16                              | 2019 ms           |
+| 1000000                | 1000000                        | 1                               | 326 ms            |
+| 2000000                | 1000000                        | 2                               | 330 ms            |
+| 4000000                | 1000000                        | 4                               | 336 ms            |
+| 8000000                | 1000000                        | 8                               | 359 ms            |
+| 16000000               | 1000000                        | 16                              | 716 ms            |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -274,3 +304,5 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 | 4000000                | 1000000                        | 4                               |                   |
 | 8000000                | 1000000                        | 8                               |                   |
 | 16000000               | 1000000                        | 16                              |                   |
+
+### Evaluation de l'écart du Speed Up

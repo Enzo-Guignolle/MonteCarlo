@@ -45,7 +45,7 @@ class PiMonteCarlo {
 public class Assignment102 {
 	public static void main(String[] args) {
 		for (int i = 0; i<Integer.parseInt(args[0]); i++) {
-			int nbIteration = 16000000;
+			int nbIteration = 160000000;
 			int nbProcessors = 16;
 			PiMonteCarlo PiVal = new PiMonteCarlo(nbIteration, nbProcessors);
 			long startTime = System.currentTimeMillis();

@@ -84,41 +84,37 @@ def plot_scalability_faible(ax, csv_file, group_size=50, title=""):
     ax.legend()
     ax.grid(True)
 
-def plot_log_error_vs_iterations(ax, csv_file, title):
-    # Charger le fichier CSV
+def plot_log_error_vs_iterations(ax, csv_file, group_size=50, title=""):
+    # Charger les données et les convertir
     df = pd.read_csv(csv_file, sep=";")
+    errors = [float(e.replace(',', '.')) for e in df['Error']]
+    iterations = df["nbIteration"].to_list()
+
+    # Calcul des logs des erreurs
+    log_errors = [math.log10(e) if e > 0 else float('nan') for e in errors]
+
+    # Calcul des moyennes par groupe
+    mean_log_errors = [
+        math.log10(sum(errors[i:i + group_size]) / len(errors[i:i + group_size]))
+        for i in range(0, len(errors), group_size)
+    ]
+
+    # Filtrer les données valides
+    valid_data = [(iterations[i], log_errors[i]) for i in range(len(log_errors)) if not math.isnan(log_errors[i])]
     
-    # Extraire les colonnes 'Error' et 'nbIteration'
-    error = df['Error'].to_list()
-    nb_iter = df["nbIteration"].to_list()
-
-    # Initialiser une liste vide pour les erreurs transformées
-    error_log = []
-
-    # Appliquer la transformation logarithmique
-    for i in error:
-        try:
-            # Convertir la virgule en point et calculer le logarithme
-            log_error = math.log10(float(i.replace(',', '.')))
-            error_log.append(log_error)
-        except ValueError:
-            # Gérer les erreurs de données invalides
-            error_log.append(float('nan'))  # Ajouter NaN si une erreur survient
-
-    # Assurer que les deux listes ont la même longueur (en supprimant les NaN de error_log et nb_iter)
-    valid_data = [(nb_iter[i], error_log[i]) for i in range(len(nb_iter)) if not math.isnan(error_log[i])]
-
-    # Si des données valides existent après le filtrage
     if valid_data:
-        nb_iter_filtered, error_log_filtered = zip(*valid_data)
+        nb_iter_filtered, log_errors_filtered = zip(*valid_data)
 
-        # Tracer les données
-        ax.scatter(nb_iter_filtered, error_log_filtered, c='b')
+        # Tracer les points et les moyennes
+        ax.scatter(nb_iter_filtered, log_errors_filtered, c='b', label="Erreur par nombre d'itération")
+        ax.scatter(sorted(set(iterations)), mean_log_errors, c='r', label="Médiane")
         ax.set_xlabel("Number of Iterations")
         ax.set_ylabel("Log(Error)")
         ax.set_title(title)
+        ax.legend()
     else:
         print("Aucune donnée valide disponible pour afficher le graphique.")
+
 
 # Créer la figure et les sous-graphique
 fig, axes = plt.subplots(3, 2, figsize=(15, 10))
@@ -128,7 +124,7 @@ plot_scalability_forte(axes[0, 0], "data/output_G24_Assignment_forte.csv", title
 plot_scalability_forte(axes[0, 1], "data/output_G24_Pi_forte.csv", title="Scalabilité Forte - Pi")
 #plot_scalability_faible(axes[1, 0], "data/output_G24_Assignment_faible.csv", title="Scalabilité Faible - Assignment")
 plot_scalability_faible(axes[1, 1], "data/output_G24_Pi_faible.csv", title="Scalabilité Faible - Pi")
-plot_log_error_vs_iterations(axes[2, 0], "data/output_G24_Assignment_faible.csv", title="Error - Assignment")
+#plot_log_error_vs_iterations(axes[2, 0], "data/output_G24_Assignment_faible.csv", title="Error - Assignment")
 plot_log_error_vs_iterations(axes[2, 1], "data/output_G24_Pi_faible.csv", title="Error - Pi")
 
 

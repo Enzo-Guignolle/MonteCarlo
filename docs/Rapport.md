@@ -17,7 +17,7 @@ Enzo GUIGNOLLE
 - #### [A/ Contexte](#a)
 - #### [B/ Réalisation des tests](#b) 
   - #### [a/ Evaluation du Speed Up](#b1)
-  - #### [b/ Evaluation de l'écart du Speed Up](#b2)
+  - #### [b/ Evaluation de l'écart de Pi](#b2)
 
 <br>
 
@@ -328,108 +328,20 @@ D'après ce tableau nous obtenu un courbe de speed up pour la scalabilité faibl
 
 <img src="images/courbe_scalabilitéFaible_distribue.png" width="400">
 
-###  <a name="b"></a> b/ Evaluation de l'écart du Speed Up
+###  <a name="b2"></a> b/ Evaluation de l'écart de Pi
 
 Dans cette sous partie, nous allons voir comment l'erreur diminue au fur et à mesure qu'on augmente le nombre d'itération dasn les tests. En premier j'ai réalisé les tests de Pi.java.
+Pour réalisé cela nous devons calculer l'erreur relative pour chaque itération de Monte Carlo réalisé sur un nombre de point réalisé. C'est à dire que le calcul à réalisé est le suivant : 
 
-| nbIteration | Error     |
-|-------------|-----------|
-| 10000000    | 0,000453  |
-| 10000000    | 0,000067  |
-| 10000000    | 0,000052  |
-| 10000000    | 0,000009  |
-| 10000000    | 0,000026  |
-| 10000000    | 0,000095  |
-| 10000000    | 0,000022  |
-| 10000000    | 0,000133  |
-| 10000000    | 0,000014  |
-| 10000000    | 0,000185  |
-| 10000000    | 0,000079  |
-| 10000000    | 0,000067  |
-| 10000000    | 0,000078  |
-| 10000000    | 0,000210  |
-| 10000000    | 0,000112  |
-| 10000000    | 0,000236  |
-| 10000000    | 0,000230  |
-| 10000000    | 0,000238  |
-| 10000000    | 0,000196  |
-| 10000000    | 0,000081  |
-| 10000000    | 0,000069  |
-| 10000000    | 0,000083  |
-| 10000000    | 0,000177  |
-| 10000000    | 0,000069  |
-| 10000000    | 0,000088  |
-| 10000000    | 0,000092  |
-| 10000000    | 0,000097  |
-| 10000000    | 0,000135  |
-| 10000000    | 0,000135  |
-| 10000000    | 0,000188  |
-| 10000000    | 0,000358  |
-| 10000000    | 0,000247  |
-| 10000000    | 0,000013  |
-| 10000000    | 0,000028  |
-| 10000000    | 0,000002  |
-| 10000000    | 0,000191  |
-| 10000000    | 0,000067  |
-| 10000000    | 0,000345  |
-| 10000000    | 0,000279  |
-| 10000000    | 0,000098  |
-| 10000000    | 0,000249  |
-| 10000000    | 0,000004  |
-| 10000000    | 0,000203  |
-| 10000000    | 0,000153  |
-| 10000000    | 0,000178  |
-| 10000000    | 0,000010  |
-| 10000000    | 0,000151  |
-| 10000000    | 0,000348  |
-| 10000000    | 0,000220  |
-| 10000000    | 0,000160  |
-| 20000000    | 0,000123  |
-| 20000000    | 0,000027  |
-| 20000000    | 0,000060  |
-| 20000000    | 0,000094  |
-| 20000000    | 0,000103  |
-| 20000000    | 0,000152  |
-| 20000000    | 0,000080  |
-| 20000000    | 0,000107  |
-| 20000000    | 0,000221  |
-| 20000000    | 0,000081  |
-| 20000000    | 0,000135  |
-| 20000000    | 0,000209  |
-| 20000000    | 0,000092  |
-| 20000000    | 0,000297  |
-| 20000000    | 0,000001  |
-| 20000000    | 0,000113  |
-| 20000000    | 0,000043  |
-| 20000000    | 0,000023  |
-| 20000000    | 0,000030  |
-| 20000000    | 0,000185  |
-| 20000000    | 0,000017  |
-| 20000000    | 0,000090  |
-| 20000000    | 0,000096  |
-| 20000000    | 0,000272  |
-| 20000000    | 0,000078  |
-| 20000000    | 0,000107  |
-| 20000000    | 0,000001  |
-| 20000000    | 0,000002  |
-| 20000000    | 0,000044  |
-| 20000000    | 0,000029  |
-| 40000000    | 0,000107  |
-| 40000000    | 0,000043  |
-| 40000000    | 0,000098  |
-| 40000000    | 0,000043  |
-| 40000000    | 0,000052  |
-| 40000000    | 0,000006  |
-| 40000000    | 0,000012  |
-| 40000000    | 0,000133  |
-| 40000000    | 0,000057  |
-| 40000000    | 0,000037  |
-| 40000000    | 0,000000  |
-| 40000000    | 0,000007  |
-| 40000000    | 0,000153  |
-| 40000000    | 0,000110  |
+```
+Erreur relative = (valeur réel de Pi - valeur calculer de pi)/valeur réel de Pi
+```
 
-Avec ces données j'ai pu obtenir un graphique qui ressemble à cela : 
+Après avoir faire le calcul pour chaque itération nous pouvons réalisé un graphique de l'erreur relative en fonction du nombre d'itération. Nous sommes censé remarqué que plus le nombre de points calculer pour Pi, l'erreur est censé diminuer et se rapprocher de 0.
+Pour le code Pi.java nous obtenons un nuage de point qui ressemble à cela :
 
 <img src="images/courbe_Erreur_Pi.JPG" width="700">
+
+Nous remarquons quand même que les nuages de points pour chaque itération diminue bien, donc que l'erreur se rapproche de 0.
+Nous pouvons aussi remarqué que les erreurs diminue lentement en fonction du nombre d'itération si nous réalisons la médiane de chaque erreur représenter par les points rouges. 
 

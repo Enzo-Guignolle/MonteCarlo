@@ -12,8 +12,12 @@ Enzo GUIGNOLLE
 ### [III/ Mise en oeuvre sur machine à mémoire partagée](#p4)
 - #### [A/ Assignment102.java](#a)
 - #### [B/ Pi.java](#b)
-### [IV/ Mise en oeuvre en mémoire distribué](#Vp5)
+### [IV/ Mise en oeuvre en mémoire distribué](#p5)
 ### [V/ Evaluation et test de performance](#p6)
+- #### [A/ Contexte](#a)
+- #### [B/ Réalisation des tests](#b) 
+  - #### [a/ Evaluation du Speed Up](#b1)
+  - #### [b/ Evaluation de l'écart du Speed Up](#b2)
 
 <br>
 
@@ -172,7 +176,7 @@ Pour pouvoir exécuter le code dans les bonnes conditions, nous devons passer un
 
 ## <a name="p6"></a> V/ Evaluation et test de performance
 
-### Contexte
+###  <a name="a"></a> Contexte
 
 Dans cette partie de mon rapport nous allons voir la qualité de chaque code au sens de la norme ISO/IEC 25010. Dans cette norme, nous allons nous concentrer sur la section "Quality in use" et dans cette section, nous allons nous concentrer sur la partie sur l'efficiency que nous pouvons retrouver dans la norme ISO/IEC 25022. Dans cette norme, il nous parle de plusieurs temps à analyser. 
 
@@ -198,9 +202,6 @@ A la suite de cela nous avons deux possibilité pour analyser les codes :
 
 - La deuxième possibilité c'est de considérer qu'on a un parallélisme idéal, c'est de qu'on cible. Dans ce cas nous T_target = T_n_processeurs et nous avons T_actual = T_n_processeurs_chapeau où T_n_processeurs_chapeau le temps en scalabilité forte T_n_processeur = (1/p)*T_1_processeur. Grâce à cela nous allons évaluer l'écart avec la courbe de speed Up.
 
-
-### Réalisation des tests
-
 Avant de préparer et réalisé les différents tests de performance, je vais donné les différentes spécifications de l'ordianteur qui les aura réalisé. Cependant il est évident que les tests seront différents sur d'autre architecture matérielle.
 
 - Processeur : Intel® Core™ i7-9700 CPU @ 3.00GHz
@@ -221,7 +222,11 @@ Ensuite pour savoir si les speed up calculer après test de chaque programme soi
 
 Pour avoir un speedUp optimal il faut que la courbe soit linéaire, c'est à dire que le speed up soit proportionnel en fonction du nombre de processeur comme le speed up de 1 processeur sera toujours 1, il faut que le speed up à N processeurs soit équivalent à 1*N.
 
-### Evaluation du Speed Up
+###  <a name="b"></a> Réalisation des tests
+
+Dans cette sous partie nous allons nous consacrer à la préparation et à la réalisation des tests. Donc nous allons faire les 2 possibilités énoncé plus haut donc nous allons commencer par l'évaluation du speed up et nous allons ensuite évalué l'écart du speed up avec l'erreur relative de chaque tests réalisé.
+
+###  <a name="b1"></a> a/ Evaluation du Speed Up
 
 ### Assignment102.java
 
@@ -257,13 +262,13 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 #### Scalabilité Forte
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 326 ms            |
-| 1000000                | 500000                         | 2                               | 172 ms            |
-| 1000000                | 250000                         | 4                               | 95 ms             |
-| 1000000                | 125000                         | 8                               | 59 ms             |
-| 1000000                | 62500                          | 16                              | 68 ms             |
+| Nombre total de points  | Nombre de point par processeur  | Nombre de processeur utilisable | Temps d'exécution |
+|-------------------------|---------------------------------|---------------------------------|-------------------|
+| 10000000                | 10000000                        | 1                               | 326 ms            |
+| 10000000                | 5000000                         | 2                               | 172 ms            |
+| 10000000                | 2500000                         | 4                               | 95 ms             |
+| 10000000                | 1250000                         | 8                               | 59 ms             |
+| 10000000                | 625000                          | 16                              | 68 ms             |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -271,13 +276,13 @@ Après avoir réalisé les tests et calculer le speedUp cela nous donne une cour
 
 #### Scalabilité Faible
 
-| Nombre total de points | Nombre de point par processeur | Nombre de processeur utilisable | Temps d'exécution |
-|------------------------|--------------------------------|---------------------------------|-------------------|
-| 1000000                | 1000000                        | 1                               | 326 ms            |
-| 2000000                | 1000000                        | 2                               | 330 ms            |
-| 4000000                | 1000000                        | 4                               | 336 ms            |
-| 8000000                | 1000000                        | 8                               | 359 ms            |
-| 16000000               | 1000000                        | 16                              | 716 ms            |
+| Nombre total de points  | Nombre de point par processeur  | Nombre de processeur utilisable | Temps d'exécution |
+|-------------------------|---------------------------------|---------------------------------|-------------------|
+| 10000000                | 10000000                        | 1                               | 326 ms            |
+| 20000000                | 10000000                        | 2                               | 330 ms            |
+| 40000000                | 10000000                        | 4                               | 336 ms            |
+| 80000000                | 10000000                        | 8                               | 359 ms            |
+| 160000000               | 10000000                        | 16                              | 716 ms            |
 
 Après avoir réalisé les tests et calculer le speedUp cela nous donne une courbe de cette manière : 
 
@@ -323,4 +328,108 @@ D'après ce tableau nous obtenu un courbe de speed up pour la scalabilité faibl
 
 <img src="images/courbe_scalabilitéFaible_distribue.png" width="400">
 
-### Evaluation de l'écart du Speed Up
+###  <a name="b"></a> b/ Evaluation de l'écart du Speed Up
+
+Dans cette sous partie, nous allons voir comment l'erreur diminue au fur et à mesure qu'on augmente le nombre d'itération dasn les tests. En premier j'ai réalisé les tests de Pi.java*
+
+| nbIteration | Error     |
+|-------------|-----------|
+| 10000000    | 0,000453  |
+| 10000000    | 0,000067  |
+| 10000000    | 0,000052  |
+| 10000000    | 0,000009  |
+| 10000000    | 0,000026  |
+| 10000000    | 0,000095  |
+| 10000000    | 0,000022  |
+| 10000000    | 0,000133  |
+| 10000000    | 0,000014  |
+| 10000000    | 0,000185  |
+| 10000000    | 0,000079  |
+| 10000000    | 0,000067  |
+| 10000000    | 0,000078  |
+| 10000000    | 0,000210  |
+| 10000000    | 0,000112  |
+| 10000000    | 0,000236  |
+| 10000000    | 0,000230  |
+| 10000000    | 0,000238  |
+| 10000000    | 0,000196  |
+| 10000000    | 0,000081  |
+| 10000000    | 0,000069  |
+| 10000000    | 0,000083  |
+| 10000000    | 0,000177  |
+| 10000000    | 0,000069  |
+| 10000000    | 0,000088  |
+| 10000000    | 0,000092  |
+| 10000000    | 0,000097  |
+| 10000000    | 0,000135  |
+| 10000000    | 0,000135  |
+| 10000000    | 0,000188  |
+| 10000000    | 0,000358  |
+| 10000000    | 0,000247  |
+| 10000000    | 0,000013  |
+| 10000000    | 0,000028  |
+| 10000000    | 0,000002  |
+| 10000000    | 0,000191  |
+| 10000000    | 0,000067  |
+| 10000000    | 0,000345  |
+| 10000000    | 0,000279  |
+| 10000000    | 0,000098  |
+| 10000000    | 0,000249  |
+| 10000000    | 0,000004  |
+| 10000000    | 0,000203  |
+| 10000000    | 0,000153  |
+| 10000000    | 0,000178  |
+| 10000000    | 0,000010  |
+| 10000000    | 0,000151  |
+| 10000000    | 0,000348  |
+| 10000000    | 0,000220  |
+| 10000000    | 0,000160  |
+| 20000000    | 0,000123  |
+| 20000000    | 0,000027  |
+| 20000000    | 0,000060  |
+| 20000000    | 0,000094  |
+| 20000000    | 0,000103  |
+| 20000000    | 0,000152  |
+| 20000000    | 0,000080  |
+| 20000000    | 0,000107  |
+| 20000000    | 0,000221  |
+| 20000000    | 0,000081  |
+| 20000000    | 0,000135  |
+| 20000000    | 0,000209  |
+| 20000000    | 0,000092  |
+| 20000000    | 0,000297  |
+| 20000000    | 0,000001  |
+| 20000000    | 0,000113  |
+| 20000000    | 0,000043  |
+| 20000000    | 0,000023  |
+| 20000000    | 0,000030  |
+| 20000000    | 0,000185  |
+| 20000000    | 0,000017  |
+| 20000000    | 0,000090  |
+| 20000000    | 0,000096  |
+| 20000000    | 0,000272  |
+| 20000000    | 0,000078  |
+| 20000000    | 0,000107  |
+| 20000000    | 0,000001  |
+| 20000000    | 0,000002  |
+| 20000000    | 0,000044  |
+| 20000000    | 0,000029  |
+| 40000000    | 0,000107  |
+| 40000000    | 0,000043  |
+| 40000000    | 0,000098  |
+| 40000000    | 0,000043  |
+| 40000000    | 0,000052  |
+| 40000000    | 0,000006  |
+| 40000000    | 0,000012  |
+| 40000000    | 0,000133  |
+| 40000000    | 0,000057  |
+| 40000000    | 0,000037  |
+| 40000000    | 0,000000  |
+| 40000000    | 0,000007  |
+| 40000000    | 0,000153  |
+| 40000000    | 0,000110  |
+
+Avec ces données j'ai pu obtenir un graphique qui ressemble à cela : 
+
+<img src="images/courbe_Erreur_Pi.JPG" width="700">
+

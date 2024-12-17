@@ -330,7 +330,7 @@ D'après ce tableau nous obtenu un courbe de speed up pour la scalabilité faibl
 
 ###  <a name="b"></a> b/ Evaluation de l'écart du Speed Up
 
-Dans cette sous partie, nous allons voir comment l'erreur diminue au fur et à mesure qu'on augmente le nombre d'itération dasn les tests. En premier j'ai réalisé les tests de Pi.java*
+Dans cette sous partie, nous allons voir comment l'erreur diminue au fur et à mesure qu'on augmente le nombre d'itération dasn les tests. En premier j'ai réalisé les tests de Pi.java.
 
 | nbIteration | Error     |
 |-------------|-----------|
